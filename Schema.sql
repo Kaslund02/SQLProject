@@ -414,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `coffee_machine_db`.`v_remote_inventory_status` (`ing
 DROP TABLE IF EXISTS `coffee_machine_db`.`v_cash_balance`;
 DROP VIEW IF EXISTS `coffee_machine_db`.`v_cash_balance` ;
 USE `coffee_machine_db`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coffee_machine_db`.`v_cash_balance` AS select coalesce(sum(`coffee_machine_db`.`cash_transaction`.`amount_change`),0) AS `current_cash_balance` from `coffee_machine_db`.`cash_transaction`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY INVOKER VIEW `coffee_machine_db`.`v_cash_balance` AS select coalesce(sum(`coffee_machine_db`.`cash_transaction`.`amount_change`),0) AS `current_cash_balance` from `coffee_machine_db`.`cash_transaction`;
 
 -- -----------------------------------------------------
 -- View `coffee_machine_db`.`v_machine_inventory_status`
@@ -422,7 +422,7 @@ CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coffee_machine
 DROP TABLE IF EXISTS `coffee_machine_db`.`v_machine_inventory_status`;
 DROP VIEW IF EXISTS `coffee_machine_db`.`v_machine_inventory_status` ;
 USE `coffee_machine_db`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coffee_machine_db`.`v_machine_inventory_status` AS select `i`.`ingredient_id` AS `ingredient_id`,`i`.`name` AS `name`,`i`.`unit` AS `unit`,`mi`.`quantity` AS `quantity`,`i`.`minimum_threshold` AS `minimum_threshold`,(case when (`mi`.`quantity` <= `i`.`minimum_threshold`) then 'LOW' else 'OK' end) AS `status`,`mi`.`last_updated` AS `last_updated` from (`coffee_machine_db`.`ingredient` `i` join `coffee_machine_db`.`machine_inventory` `mi` on((`mi`.`ingredient_id` = `i`.`ingredient_id`)));
+CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY INVOKER VIEW `coffee_machine_db`.`v_machine_inventory_status` AS select `i`.`ingredient_id` AS `ingredient_id`,`i`.`name` AS `name`,`i`.`unit` AS `unit`,`mi`.`quantity` AS `quantity`,`i`.`minimum_threshold` AS `minimum_threshold`,(case when (`mi`.`quantity` <= `i`.`minimum_threshold`) then 'LOW' else 'OK' end) AS `status`,`mi`.`last_updated` AS `last_updated` from (`coffee_machine_db`.`ingredient` `i` join `coffee_machine_db`.`machine_inventory` `mi` on((`mi`.`ingredient_id` = `i`.`ingredient_id`)));
 
 -- -----------------------------------------------------
 -- View `coffee_machine_db`.`v_remote_inventory_status`
@@ -430,7 +430,7 @@ CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coffee_machine
 DROP TABLE IF EXISTS `coffee_machine_db`.`v_remote_inventory_status`;
 DROP VIEW IF EXISTS `coffee_machine_db`.`v_remote_inventory_status` ;
 USE `coffee_machine_db`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coffee_machine_db`.`v_remote_inventory_status` AS select `i`.`ingredient_id` AS `ingredient_id`,`i`.`name` AS `name`,`i`.`unit` AS `unit`,`ri`.`quantity` AS `quantity`,`ri`.`last_updated` AS `last_updated` from (`coffee_machine_db`.`ingredient` `i` join `coffee_machine_db`.`remote_inventory` `ri` on((`ri`.`ingredient_id` = `i`.`ingredient_id`)));
+CREATE  OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY INVOKER VIEW `coffee_machine_db`.`v_remote_inventory_status` AS select `i`.`ingredient_id` AS `ingredient_id`,`i`.`name` AS `name`,`i`.`unit` AS `unit`,`ri`.`quantity` AS `quantity`,`ri`.`last_updated` AS `last_updated` from (`coffee_machine_db`.`ingredient` `i` join `coffee_machine_db`.`remote_inventory` `ri` on((`ri`.`ingredient_id` = `i`.`ingredient_id`)));
 USE `coffee_machine_db`;
 
 DELIMITER $$
