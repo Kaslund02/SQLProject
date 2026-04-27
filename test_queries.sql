@@ -119,9 +119,20 @@ ORDER BY event_timestamp;
 SELECT
     e.employee_code,
     e.name,
-    e.role,
-    e.is_authorized_cash,
-    e.is_authorized_inventory,
+    r.role_name,
+    COALESCE(GROUP_CONCAT(p.permission_name ORDER BY p.permission_name SEPARATOR ', '), 'No permissions') AS permissions,
     e.is_active
 FROM employee e
+JOIN `role` r
+    ON r.role_id = e.role_id
+LEFT JOIN `role_permission` rp
+    ON rp.role_id = r.role_id
+LEFT JOIN `permission` p
+    ON p.permission_id = rp.permission_id
+GROUP BY
+    e.employee_id,
+    e.employee_code,
+    e.name,
+    r.role_name,
+    e.is_active
 ORDER BY e.employee_id;

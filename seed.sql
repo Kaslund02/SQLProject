@@ -3,21 +3,50 @@ USE coffee_machine_db;
 SET @OLD_SQL_SAFE_UPDATES = @@SQL_SAFE_UPDATES;
 SET SQL_SAFE_UPDATES = 0;
 
+INSERT INTO `role` (
+    role_id,
+    role_name,
+    description
+) VALUES
+    (1, 'admin', 'Full access to the system'),
+    (2, 'employee', 'Regular employee with no administrative permissions'),
+    (3, 'cleaner', 'Can register machine cleaning'),
+    (4, 'technician', 'Can update and transfer inventory');
+
+INSERT INTO `permission` (
+    permission_id,
+    permission_name,
+    description
+) VALUES
+    (1, 'UPDATE_CASH', 'Can update cash balance and withdraw cash'),
+    (2, 'UPDATE_INVENTORY', 'Can update inventory and transfer stock'),
+    (3, 'REGISTER_CLEANING', 'Can register cleaning events'),
+    (4, 'CREATE_DRINK', 'Can create or change drinks and recipes');
+
+INSERT INTO `role_permission` (
+    role_id,
+    permission_id
+) VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (3, 3),
+    (4, 2);
+
 INSERT INTO employee (
     employee_id,
     employee_code,
     name,
-    role,
+    role_id,
     pin_code,
-    is_authorized_cash,
-    is_authorized_inventory,
     is_active,
     created_at
 ) VALUES
-    (1, 'EMP001', 'Philip Hansen', 'admin', '1234', 1, 1, 1, '2026-04-01 08:00:00'),
-    (2, 'EMP002', 'Mikkel Jensen', 'employee', '2345', 0, 0, 1, '2026-04-01 08:05:00'),
-    (3, 'EMP003', 'Sara Nielsen', 'cleaner', '3456', 0, 0, 1, '2026-04-01 08:10:00'),
-    (4, 'EMP004', 'Jonas Larsen', 'technician', '4567', 0, 1, 1, '2026-04-01 08:15:00');
+    (1, 'EMP001', 'Philip Hansen', 1, '1234', 1, '2026-04-01 08:00:00'),
+    (2, 'EMP002', 'Mikkel Jensen', 2, '2345', 1, '2026-04-01 08:05:00'),
+    (3, 'EMP003', 'Sara Nielsen', 3, '3456', 1, '2026-04-01 08:10:00'),
+    (4, 'EMP004', 'Jonas Larsen', 4, '4567', 1, '2026-04-01 08:15:00');
 
 INSERT INTO drink (
     drink_id,
