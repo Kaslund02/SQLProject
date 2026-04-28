@@ -208,6 +208,34 @@ FROM (
 ORDER BY event_timestamp;
 
 SELECT
+    'Employee PIN login test' AS result_type,
+    'Correct PIN for active employee' AS test_case,
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM employee
+            WHERE employee_code = 'EMP001'
+              AND pin_code = '1234'
+              AND is_active = 1
+        ) THEN 'PASS'
+        ELSE 'FAIL'
+    END AS test_result
+UNION ALL
+SELECT
+    'Employee PIN login test' AS result_type,
+    'Wrong PIN is rejected' AS test_case,
+    CASE
+        WHEN NOT EXISTS (
+            SELECT 1
+            FROM employee
+            WHERE employee_code = 'EMP001'
+              AND pin_code = '0000'
+              AND is_active = 1
+        ) THEN 'PASS'
+        ELSE 'FAIL'
+    END AS test_result;
+
+SELECT
     'Employees and permissions' AS result_type,
     e.employee_code,
     e.name,

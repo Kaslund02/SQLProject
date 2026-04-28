@@ -14,6 +14,66 @@ JOIN `role` r
     ON r.role_id = e.role_id
 ORDER BY e.employee_id;
 
+-- Login test: correct employee code and PIN should return LOGIN_OK.
+SET @login_employee_code = 'EMP001';
+SET @login_pin_code = '1234';
+
+SELECT
+    e.employee_id,
+    e.employee_code,
+    e.name,
+    r.role_name,
+    'LOGIN_OK' AS login_status
+FROM employee e
+JOIN `role` r
+    ON r.role_id = e.role_id
+WHERE e.employee_code = @login_employee_code
+  AND e.pin_code = @login_pin_code
+  AND e.is_active = 1;
+
+-- Login test: wrong PIN should return no rows.
+SET @login_employee_code = 'EMP001';
+SET @login_pin_code = '0000';
+
+SELECT
+    e.employee_id,
+    e.employee_code,
+    e.name,
+    r.role_name,
+    'LOGIN_OK' AS login_status
+FROM employee e
+JOIN `role` r
+    ON r.role_id = e.role_id
+WHERE e.employee_code = @login_employee_code
+  AND e.pin_code = @login_pin_code
+  AND e.is_active = 1;
+
+-- Login test: inactive employees should return no rows.
+-- Run the UPDATE back to is_active = 1 after the test.
+UPDATE employee
+SET is_active = 0
+WHERE employee_code = 'EMP002';
+
+SET @login_employee_code = 'EMP002';
+SET @login_pin_code = '2345';
+
+SELECT
+    e.employee_id,
+    e.employee_code,
+    e.name,
+    r.role_name,
+    'LOGIN_OK' AS login_status
+FROM employee e
+JOIN `role` r
+    ON r.role_id = e.role_id
+WHERE e.employee_code = @login_employee_code
+  AND e.pin_code = @login_pin_code
+  AND e.is_active = 1;
+
+UPDATE employee
+SET is_active = 1
+WHERE employee_code = 'EMP002';
+
 SELECT
     r.role_name,
     p.permission_name
@@ -66,6 +126,29 @@ INSERT INTO employee (
     1,
     CURRENT_TIMESTAMP
 );
+
+-- Change an employee PIN.
+-- Keep it as 4 digits because employee.pin_code is CHAR(4).
+UPDATE employee
+SET pin_code = '9999'
+WHERE employee_code = 'EMP005';
+
+-- Test login after changing the PIN.
+SET @login_employee_code = 'EMP005';
+SET @login_pin_code = '9999';
+
+SELECT
+    e.employee_id,
+    e.employee_code,
+    e.name,
+    r.role_name,
+    'LOGIN_OK' AS login_status
+FROM employee e
+JOIN `role` r
+    ON r.role_id = e.role_id
+WHERE e.employee_code = @login_employee_code
+  AND e.pin_code = @login_pin_code
+  AND e.is_active = 1;
 
 -- Change an employee role.
 UPDATE employee
