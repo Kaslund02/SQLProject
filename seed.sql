@@ -48,6 +48,17 @@ INSERT INTO employee (
     (3, 'EMP003', 'Sara Nielsen', 3, '3456', 1, '2026-04-01 08:10:00'),
     (4, 'EMP004', 'Jonas Larsen', 4, '4567', 1, '2026-04-01 08:15:00');
 
+SET @login_employee_code = 'EMP001';
+SET @login_pin_code = '1234';
+SET @current_employee_id = NULL;
+
+SELECT employee_id
+INTO @current_employee_id
+FROM employee
+WHERE employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND is_active = 1;
+
 INSERT INTO drink (
     drink_id,
     name,
@@ -213,4 +224,5 @@ INSERT INTO stock_transfer_item (
     (7, 1, 7, 500.00),
     (8, 1, 8, 1000.00);
 
+SET @current_employee_id = NULL;
 SET SQL_SAFE_UPDATES = @OLD_SQL_SAFE_UPDATES;

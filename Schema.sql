@@ -567,12 +567,108 @@ BEGIN
     IF EXISTS (
         SELECT 1
         FROM drink_ingredient di
-        JOIN machine_inventory mi ON mi.ingredient_id = di.ingredient_id
+        LEFT JOIN machine_inventory mi ON mi.ingredient_id = di.ingredient_id
         WHERE di.drink_id = NEW.drink_id
-          AND mi.quantity < di.amount_required
+          AND (mi.ingredient_id IS NULL OR mi.quantity < di.amount_required)
     ) THEN
         SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Not enough machine inventory to prepare the selected drink';
+    END IF;
+END$$
+
+
+USE `coffee_machine_db`$$
+DROP TRIGGER IF EXISTS `coffee_machine_db`.`trg_drink_authorize_create` $$
+USE `coffee_machine_db`$$
+CREATE
+TRIGGER `coffee_machine_db`.`trg_drink_authorize_create`
+BEFORE INSERT ON `coffee_machine_db`.`drink`
+FOR EACH ROW
+BEGIN
+    IF NOT (EXISTS (
+        SELECT 1
+        FROM employee e
+        JOIN `role_permission` rp ON rp.role_id = e.role_id
+        JOIN `permission` p ON p.permission_id = rp.permission_id
+        WHERE e.employee_id = @current_employee_id
+          AND e.is_active = TRUE
+          AND p.permission_name = 'CREATE_DRINK'
+    )
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Employee is not authorized to create or update drinks';
+    END IF;
+END$$
+
+
+USE `coffee_machine_db`$$
+DROP TRIGGER IF EXISTS `coffee_machine_db`.`trg_drink_authorize_update` $$
+USE `coffee_machine_db`$$
+CREATE
+TRIGGER `coffee_machine_db`.`trg_drink_authorize_update`
+BEFORE UPDATE ON `coffee_machine_db`.`drink`
+FOR EACH ROW
+BEGIN
+    IF NOT (EXISTS (
+        SELECT 1
+        FROM employee e
+        JOIN `role_permission` rp ON rp.role_id = e.role_id
+        JOIN `permission` p ON p.permission_id = rp.permission_id
+        WHERE e.employee_id = @current_employee_id
+          AND e.is_active = TRUE
+          AND p.permission_name = 'CREATE_DRINK'
+    )
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Employee is not authorized to create or update drinks';
+    END IF;
+END$$
+
+
+USE `coffee_machine_db`$$
+DROP TRIGGER IF EXISTS `coffee_machine_db`.`trg_drink_ingredient_authorize_create` $$
+USE `coffee_machine_db`$$
+CREATE
+TRIGGER `coffee_machine_db`.`trg_drink_ingredient_authorize_create`
+BEFORE INSERT ON `coffee_machine_db`.`drink_ingredient`
+FOR EACH ROW
+BEGIN
+    IF NOT (EXISTS (
+        SELECT 1
+        FROM employee e
+        JOIN `role_permission` rp ON rp.role_id = e.role_id
+        JOIN `permission` p ON p.permission_id = rp.permission_id
+        WHERE e.employee_id = @current_employee_id
+          AND e.is_active = TRUE
+          AND p.permission_name = 'CREATE_DRINK'
+    )
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Employee is not authorized to create or update drink recipes';
+    END IF;
+END$$
+
+
+USE `coffee_machine_db`$$
+DROP TRIGGER IF EXISTS `coffee_machine_db`.`trg_drink_ingredient_authorize_update` $$
+USE `coffee_machine_db`$$
+CREATE
+TRIGGER `coffee_machine_db`.`trg_drink_ingredient_authorize_update`
+BEFORE UPDATE ON `coffee_machine_db`.`drink_ingredient`
+FOR EACH ROW
+BEGIN
+    IF NOT (EXISTS (
+        SELECT 1
+        FROM employee e
+        JOIN `role_permission` rp ON rp.role_id = e.role_id
+        JOIN `permission` p ON p.permission_id = rp.permission_id
+        WHERE e.employee_id = @current_employee_id
+          AND e.is_active = TRUE
+          AND p.permission_name = 'CREATE_DRINK'
+    )
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Employee is not authorized to create or update drink recipes';
     END IF;
 END$$
 

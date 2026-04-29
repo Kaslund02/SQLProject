@@ -15,11 +15,13 @@ JOIN `role` r
 ORDER BY e.employee_id;
 
 -- Login test: correct employee code and PIN should return LOGIN_OK.
+-- The same login also sets @current_employee_id, which permissions use afterwards.
 SET @login_employee_code = 'EMP001';
 SET @login_pin_code = '1234';
+SET @current_employee_id = NULL;
 
 SELECT
-    e.employee_id,
+    @current_employee_id := e.employee_id AS employee_id,
     e.employee_code,
     e.name,
     r.role_name,
@@ -27,8 +29,8 @@ SELECT
 FROM employee e
 JOIN `role` r
     ON r.role_id = e.role_id
-WHERE e.employee_code = @login_employee_code
-  AND e.pin_code = @login_pin_code
+WHERE e.employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND e.pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
   AND e.is_active = 1;
 
 -- Login test: wrong PIN should return no rows.
@@ -44,8 +46,8 @@ SELECT
 FROM employee e
 JOIN `role` r
     ON r.role_id = e.role_id
-WHERE e.employee_code = @login_employee_code
-  AND e.pin_code = @login_pin_code
+WHERE e.employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND e.pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
   AND e.is_active = 1;
 
 -- Login test: inactive employees should return no rows.
@@ -66,8 +68,8 @@ SELECT
 FROM employee e
 JOIN `role` r
     ON r.role_id = e.role_id
-WHERE e.employee_code = @login_employee_code
-  AND e.pin_code = @login_pin_code
+WHERE e.employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND e.pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
   AND e.is_active = 1;
 
 UPDATE employee
@@ -83,6 +85,101 @@ JOIN `role` r
 JOIN `permission` p
     ON p.permission_id = rp.permission_id
 ORDER BY r.role_name, p.permission_name;
+
+-- Create a new drink and recipe.
+-- This requires CREATE_DRINK from the currently logged-in employee.
+SET @login_employee_code = 'EMP001';
+SET @login_pin_code = '1234';
+SET @current_employee_id = NULL;
+
+SELECT @current_employee_id := employee_id
+FROM employee
+WHERE employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND is_active = 1;
+
+INSERT INTO drink (
+    name,
+    price,
+    is_active,
+    created_at
+)
+SELECT
+    'Hazelnut Latte',
+    35.00,
+    1,
+    CURRENT_TIMESTAMP
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM drink
+    WHERE name = 'Hazelnut Latte'
+);
+
+SET @manual_drink_id = (
+    SELECT drink_id
+    FROM drink
+    WHERE name = 'Hazelnut Latte'
+);
+
+INSERT INTO drink_ingredient (
+    drink_id,
+    ingredient_id,
+    amount_required
+)
+SELECT @manual_drink_id, 1, 18.00
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM drink_ingredient
+    WHERE drink_id = @manual_drink_id
+      AND ingredient_id = 1
+);
+
+INSERT INTO drink_ingredient (
+    drink_id,
+    ingredient_id,
+    amount_required
+)
+SELECT @manual_drink_id, 2, 40.00
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM drink_ingredient
+    WHERE drink_id = @manual_drink_id
+      AND ingredient_id = 2
+);
+
+INSERT INTO drink_ingredient (
+    drink_id,
+    ingredient_id,
+    amount_required
+)
+SELECT @manual_drink_id, 3, 160.00
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM drink_ingredient
+    WHERE drink_id = @manual_drink_id
+      AND ingredient_id = 3
+);
+
+SET @current_employee_id = NULL;
+
+-- Rejection example:
+-- If you run this block, EMP002 is logged in and should be rejected
+-- because the employee role does not have CREATE_DRINK.
+SET @login_employee_code = 'EMP002';
+SET @login_pin_code = '2345';
+SET @current_employee_id = NULL;
+
+SELECT @current_employee_id := employee_id
+FROM employee
+WHERE employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND is_active = 1;
+
+UPDATE drink
+SET price = price
+WHERE name = 'Hazelnut Latte';
+
+SET @current_employee_id = NULL;
 
 -- Manually read purchases/transactions with optional filters.
 -- Change the values before running the SELECT.
@@ -146,8 +243,8 @@ SELECT
 FROM employee e
 JOIN `role` r
     ON r.role_id = e.role_id
-WHERE e.employee_code = @login_employee_code
-  AND e.pin_code = @login_pin_code
+WHERE e.employee_code = CONVERT(@login_employee_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
+  AND e.pin_code = CONVERT(@login_pin_code USING utf8mb4) COLLATE utf8mb4_unicode_ci
   AND e.is_active = 1;
 
 -- Change an employee role.

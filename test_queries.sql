@@ -236,6 +236,42 @@ SELECT
     END AS test_result;
 
 SELECT
+    'CREATE_DRINK permission test' AS result_type,
+    'Admin has CREATE_DRINK' AS test_case,
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM employee e
+            JOIN `role_permission` rp
+                ON rp.role_id = e.role_id
+            JOIN `permission` p
+                ON p.permission_id = rp.permission_id
+            WHERE e.employee_code = 'EMP001'
+              AND e.is_active = 1
+              AND p.permission_name = 'CREATE_DRINK'
+        ) THEN 'PASS'
+        ELSE 'FAIL'
+    END AS test_result
+UNION ALL
+SELECT
+    'CREATE_DRINK permission test' AS result_type,
+    'Regular employee does not have CREATE_DRINK' AS test_case,
+    CASE
+        WHEN NOT EXISTS (
+            SELECT 1
+            FROM employee e
+            JOIN `role_permission` rp
+                ON rp.role_id = e.role_id
+            JOIN `permission` p
+                ON p.permission_id = rp.permission_id
+            WHERE e.employee_code = 'EMP002'
+              AND e.is_active = 1
+              AND p.permission_name = 'CREATE_DRINK'
+        ) THEN 'PASS'
+        ELSE 'FAIL'
+    END AS test_result;
+
+SELECT
     'Employees and permissions' AS result_type,
     e.employee_code,
     e.name,
