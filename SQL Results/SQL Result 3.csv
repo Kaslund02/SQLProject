@@ -1,0 +1,4 @@
+result_type,purchase_id,purchased_at,drink_name,payment_type,amount_paid
+"Only card transactions",2,"2026-04-02 10:20:00",Cappuccino,card,28.00
+"Only card transactions",4,"2026-04-03 11:15:00",Latte,card,30.00
+"Only card transactions",6,"2026-04-04 09:45:00","Vanilla Latte",card,34.00

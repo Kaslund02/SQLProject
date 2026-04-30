@@ -1,0 +1,3 @@
+result_type,test_case,test_result
+"CREATE_DRINK permission test","Admin has CREATE_DRINK",PASS
+"CREATE_DRINK permission test","Regular employee does not have CREATE_DRINK",PASS

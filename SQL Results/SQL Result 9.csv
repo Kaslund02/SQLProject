@@ -1,0 +1,9 @@
+result_type,ingredient_id,name,unit,quantity,last_updated
+"Remote inventory",7,"Caramel syrup",ml,2500.00,"2026-04-29 21:56:09"
+"Remote inventory",5,"Cocoa powder",g,1300.00,"2026-04-29 21:56:09"
+"Remote inventory",1,"Coffee beans",g,4500.00,"2026-04-29 21:56:09"
+"Remote inventory",3,Milk,ml,9000.00,"2026-04-29 21:56:09"
+"Remote inventory",8,"Oat milk",ml,7000.00,"2026-04-29 21:56:09"
+"Remote inventory",4,Sugar,g,1750.00,"2026-04-29 21:56:09"
+"Remote inventory",6,"Vanilla syrup",ml,2500.00,"2026-04-29 21:56:09"
+"Remote inventory",2,Water,ml,18000.00,"2026-04-29 21:56:09"

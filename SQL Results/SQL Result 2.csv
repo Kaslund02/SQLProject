@@ -1,0 +1,5 @@
+result_type,purchase_id,purchased_at,drink_name,payment_type,amount_paid
+"Only cash transactions",1,"2026-04-02 10:15:00",Espresso,cash,18.00
+"Only cash transactions",3,"2026-04-03 11:05:00",Americano,cash,22.00
+"Only cash transactions",5,"2026-04-04 09:30:00",Mocha,cash,34.00
+"Only cash transactions",7,"2026-04-04 10:00:00","Caramel Oat Latte",cash,36.00

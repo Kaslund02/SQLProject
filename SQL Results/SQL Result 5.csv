@@ -1,0 +1,2 @@
+result_type,purchase_id,purchased_at,drink_name,payment_type,amount_paid
+"Combination: date, payment type and drink",5,"2026-04-04 09:30:00",Mocha,cash,34.00

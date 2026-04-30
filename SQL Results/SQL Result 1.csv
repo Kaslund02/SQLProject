@@ -1,0 +1,8 @@
+result_type,purchase_id,purchased_at,drink_name,payment_type,amount_paid,cash_transaction_type,cash_amount_change
+"All transactions in selected time range",1,"2026-04-02 10:15:00",Espresso,cash,18.00,cash_sale,18.00
+"All transactions in selected time range",2,"2026-04-02 10:20:00",Cappuccino,card,28.00,NULL,NULL
+"All transactions in selected time range",3,"2026-04-03 11:05:00",Americano,cash,22.00,cash_sale,22.00
+"All transactions in selected time range",4,"2026-04-03 11:15:00",Latte,card,30.00,NULL,NULL
+"All transactions in selected time range",5,"2026-04-04 09:30:00",Mocha,cash,34.00,cash_sale,34.00
+"All transactions in selected time range",6,"2026-04-04 09:45:00","Vanilla Latte",card,34.00,NULL,NULL
+"All transactions in selected time range",7,"2026-04-04 10:00:00","Caramel Oat Latte",cash,36.00,cash_sale,36.00

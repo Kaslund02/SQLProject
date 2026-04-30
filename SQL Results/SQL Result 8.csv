@@ -1,0 +1,9 @@
+result_type,ingredient_id,name,unit,quantity,minimum_threshold,status,last_updated
+"Machine inventory",7,"Caramel syrup",ml,1180.00,250.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",5,"Cocoa powder",g,488.00,150.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",1,"Coffee beans",g,1374.00,250.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",3,Milk,ml,3370.00,750.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",8,"Oat milk",ml,3320.00,750.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",4,Sugar,g,737.00,200.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",6,"Vanilla syrup",ml,1180.00,250.00,OK,"2026-04-29 21:56:09"
+"Machine inventory",2,Water,ml,6600.00,1000.00,OK,"2026-04-29 21:56:09"

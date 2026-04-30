@@ -1,0 +1,31 @@
+result_type,drink_name,ingredient_name,amount_required,unit
+"Drink recipes",Americano,"Coffee beans",18.00,g
+"Drink recipes",Americano,Water,160.00,ml
+"Drink recipes",Cappuccino,"Coffee beans",18.00,g
+"Drink recipes",Cappuccino,Milk,120.00,ml
+"Drink recipes",Cappuccino,Water,40.00,ml
+"Drink recipes","Caramel Oat Latte","Caramel syrup",20.00,ml
+"Drink recipes","Caramel Oat Latte","Coffee beans",18.00,g
+"Drink recipes","Caramel Oat Latte","Oat milk",180.00,ml
+"Drink recipes","Caramel Oat Latte",Sugar,5.00,g
+"Drink recipes","Caramel Oat Latte",Water,40.00,ml
+"Drink recipes",Cortado,"Coffee beans",18.00,g
+"Drink recipes",Cortado,Milk,60.00,ml
+"Drink recipes",Cortado,Water,35.00,ml
+"Drink recipes",Espresso,"Coffee beans",18.00,g
+"Drink recipes",Espresso,Water,40.00,ml
+"Drink recipes","Flat White","Coffee beans",18.00,g
+"Drink recipes","Flat White",Milk,140.00,ml
+"Drink recipes","Flat White",Water,35.00,ml
+"Drink recipes",Latte,"Coffee beans",18.00,g
+"Drink recipes",Latte,Milk,180.00,ml
+"Drink recipes",Latte,Water,40.00,ml
+"Drink recipes",Mocha,"Cocoa powder",12.00,g
+"Drink recipes",Mocha,"Coffee beans",18.00,g
+"Drink recipes",Mocha,Milk,150.00,ml
+"Drink recipes",Mocha,Sugar,8.00,g
+"Drink recipes",Mocha,Water,40.00,ml
+"Drink recipes","Vanilla Latte","Coffee beans",18.00,g
+"Drink recipes","Vanilla Latte",Milk,180.00,ml
+"Drink recipes","Vanilla Latte","Vanilla syrup",20.00,ml
+"Drink recipes","Vanilla Latte",Water,40.00,ml

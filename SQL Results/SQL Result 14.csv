@@ -1,0 +1,5 @@
+result_type,employee_code,name,role_name,permissions,is_active
+"Employees and permissions",EMP001,"Philip Hansen",admin,"CREATE_DRINK, REGISTER_CLEANING, UPDATE_CASH, UPDATE_INVENTORY",1
+"Employees and permissions",EMP002,"Mikkel Jensen",employee,"No permissions",1
+"Employees and permissions",EMP003,"Sara Nielsen",cleaner,REGISTER_CLEANING,1
+"Employees and permissions",EMP004,"Jonas Larsen",technician,UPDATE_INVENTORY,1

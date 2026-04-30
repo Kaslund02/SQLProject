@@ -1,0 +1,2 @@
+result_type,purchase_id,purchased_at,drink_name,payment_type,amount_paid
+"Only selected drink",2,"2026-04-02 10:20:00",Cappuccino,card,28.00
